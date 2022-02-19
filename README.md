@@ -1,0 +1,1 @@
+In this part I show differents supervised models, in this case I going to start with a logisticc regression model.
