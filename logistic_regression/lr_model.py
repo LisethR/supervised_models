@@ -1,4 +1,5 @@
 # base de datos
+from multiprocessing.sharedctypes import Value
 import pyodbc
 import sqlalchemy as db
 import numpy as np
@@ -48,7 +49,6 @@ data['gt_density'] = data.density > median_data.density
     p9.geom_density(alpha = .3)
 )
 
-# Se puede apreciar, menor densidad mayor el grado de alcohols
 
 # plot3
 (
@@ -74,7 +74,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 lr=LogisticRegression()
 #tuning weight for minority class then weight for majority class will be 1-weight of minority class
 #Setting the range for class weights
-weights = np.linspace(0.0,0.99,500)
+weights = np.linspace(0.0,0.99,100)
 #specifying all hyperparameters with possible values
 param = {'C': [0.1, 0.5, 1,10,15,20], 'penalty': ['l1','l2'],"class_weight":[{0:x ,1:1.0 -x} for x in weights]}
 # create 5 folds
@@ -88,15 +88,18 @@ model.fit(X_train,y_train)
 print("Best F1 score: ", model.best_score_)
 print("Best hyperparameters: ", model.best_params_)
 
+the_best_params = model.best_params_
+h_c = list(the_best_params.values())[0]
+h_class = list(the_best_params.values())[1]
+h_penalty = list(the_best_params.values())[2]
+
 #Building Model again with best params
 lr2=LogisticRegression(class_weight={0:0.27,1:0.73},C=20,penalty="l2")
 lr2.fit(X_train,y_train)
 
 #Building Model again with best params
-lr2=LogisticRegression(class_weight={0:0.3749699398797595,1:0.6250300601202405},C=20,penalty="l2")
+lr2=LogisticRegression(class_weight={0:0.39877755511022045,1:0.6012224448897796},C=0.1,penalty="l2")
 lr2.fit(X_train,y_train)
-
-
 
 # predict probabilities on Test and take probability for class 1([:1])
 y_pred_prob_test = lr2.predict_proba(X_test)[:, 1]
