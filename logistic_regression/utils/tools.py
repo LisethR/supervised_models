@@ -52,15 +52,18 @@ def connection_db_sql(database: str, consult_sql_server: str):
     # return dataframe with consulting
     return data_from_sqlserver
 
+def graf_boxplot(data_aviable, v1: str, v2: str):
+    print(  p9.ggplot(data_aviable, p9.aes(v1,v2, color = v1)) +
+        p9.theme(figure_size=(20, 5)) +
+        p9.geom_boxplot() +
+        p9.coord_flip())
 
-# server = 'LAPTOP-V50CPP72' 
-# database = 'wines_data'
+def graf_density(data_aviable, v1: str, v2: str):
+    print(  p9.ggplot(data_aviable, p9.aes(v1, fill = v2)) +
+    p9.theme(figure_size=(20, 5)) +
+    p9.geom_density(alpha = .3))
 
-# cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
-#                             'SERVER='+server+';DATABASE='+database+';'
-#                             'TRUSTED_CONNECTION=yes')
-
-# # consultar data ----
-# data = pd.read_sql_query("SELECT density, quality, residual_sugar, alcohol FROM winequality", cnxn) 
-# median_data = data.median()
-# data['gt_density'] = data.density > median_data.density
+def graf_bar(data_aviable, v1: str):
+    print( p9.ggplot(data_aviable, p9.aes(v1, fill = v1)) +
+    p9.theme(figure_size=(20, 5)) +
+    p9.geom_bar(alpha =0.3))

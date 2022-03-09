@@ -1,60 +1,8 @@
-# base de datos
-from multiprocessing.sharedctypes import Value
-import pyodbc
-import sqlalchemy as db
-import numpy as np
-import pandas as pd
-# graficas
-import matplotlib.pyplot as plt
-import seaborn as sns
-import plotnine as p9
-# modelaje
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-#Hyperparameter tuning
-from sklearn.model_selection import StratifiedKFold
-from sklearn.model_selection import GridSearchCV
+from utils.tools import *
 
-# predict
-from sklearn.metrics import roc_auc_score
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import precision_score
-from sklearn.metrics import recall_score
+data = connection_db_sql('wines_data', "SELECT density, quality, residual_sugar, alcohol FROM winequality")
+data['gt_density'] = data.density > data.density.median()
 
-# TODO:
-# 1. Arreglar el script
-# 2. y verificar los pasos
-
-# conn
-server = 'LAPTOP-V50CPP72' 
-database = 'wines_data'
-
-cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
-                            'SERVER='+server+';DATABASE='+database+';'
-                            'TRUSTED_CONNECTION=yes')
-
-# consultar data ----
-data = pd.read_sql_query("SELECT density, quality, residual_sugar, alcohol FROM winequality", cnxn) 
-median_data = data.median()
-data['gt_density'] = data.density > median_data.density
-
-# plot1
-(
-    p9.ggplot(data, p9.aes('gt_density','alcohol', color = 'gt_density')) +
-    p9.geom_boxplot()
-)
-
-(
-    p9.ggplot(data, p9.aes('alcohol', fill = 'gt_density')) +
-    p9.geom_density(alpha = .3)
-)
-
-
-# plot3
-(
-    p9.ggplot(data, p9.aes('gt_density', fill = 'gt_density')) +
-    p9.geom_bar()
-)
 data[['quality', 'gt_density']].groupby('gt_density').count()
 # se puede observar una data balanceada
 
