@@ -64,6 +64,7 @@ def graf_density(data_aviable, v1: str, v2: str):
     p9.geom_density(alpha = .3))
 
 def graf_bar(data_aviable, v1: str):
+    """descripttive"""
     print( p9.ggplot(data_aviable, p9.aes(v1, fill = v1)) +
     p9.theme(figure_size=(20, 5)) +
     p9.geom_bar(alpha =0.3))
