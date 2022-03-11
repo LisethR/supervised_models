@@ -1,4 +1,5 @@
 # base de datos
+from scipy.stats import uniform
 import pyodbc
 import sqlalchemy as db
 import numpy as np
@@ -12,6 +13,7 @@ from sklearn.model_selection import train_test_split
 #Hyperparameter tuning
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import RandomizedSearchCV
 
 # predict
 from sklearn.metrics import roc_auc_score
@@ -68,3 +70,5 @@ def graf_bar(data_aviable, v1: str):
     print( p9.ggplot(data_aviable, p9.aes(v1, fill = v1)) +
     p9.theme(figure_size=(20, 5)) +
     p9.geom_bar(alpha =0.3))
+
+# https://machinelearningmastery.com/hyperparameter-optimization-with-random-search-and-grid-search/
